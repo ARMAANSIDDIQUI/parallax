@@ -50,9 +50,17 @@ export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps
       
       vec3 pos = position;
       
-      // Subtle animated distortion along the surface
-      float distortion = sin(pos.x * 2.0 + uTime * 2.0) * 0.2 + cos(pos.z * 2.0 + uTime) * 0.1;
-      pos.y += distortion;
+      // Increase wave frequency and amplitude based on scroll
+      float waveFreq = 2.0 + uScroll * 3.0;
+      float waveAmp = 0.2 + uScroll * 1.5;
+      
+      // Animated distortion along the surface
+      float distortion = sin(pos.x * waveFreq + uTime * 3.0) * waveAmp + cos(pos.z * waveFreq + uTime * 2.0) * (waveAmp * 0.5);
+      
+      // Add a secondary high-frequency wave that appears on scroll
+      float detailWave = sin(pos.x * 10.0 - uTime * 5.0) * (uScroll * 0.3);
+      
+      pos.y += distortion + detailWave;
 
       vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
       vViewPosition = -mvPosition.xyz;
