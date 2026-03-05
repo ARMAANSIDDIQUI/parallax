@@ -50,15 +50,15 @@ export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps
       
       vec3 pos = position;
       
-      // Increase wave frequency and amplitude based on scroll
-      float waveFreq = 2.0 + uScroll * 3.0;
-      float waveAmp = 0.2 + uScroll * 1.5;
+      // Increase wave frequency and amplitude based on scroll (reduced)
+      float waveFreq = 2.0 + uScroll * 1.5;
+      float waveAmp = 0.2 + uScroll * 0.6;
       
-      // Animated distortion along the surface
-      float distortion = sin(pos.x * waveFreq + uTime * 3.0) * waveAmp + cos(pos.z * waveFreq + uTime * 2.0) * (waveAmp * 0.5);
+      // Animated distortion along the surface (slower, gentler time multiplier)
+      float distortion = sin(pos.x * waveFreq + uTime * 0.8) * waveAmp + cos(pos.z * waveFreq + uTime * 0.5) * (waveAmp * 0.5);
       
-      // Add a secondary high-frequency wave that appears on scroll
-      float detailWave = sin(pos.x * 10.0 - uTime * 5.0) * (uScroll * 0.3);
+      // Add a secondary high-frequency wave that appears on scroll (slower time, reduced amplitude)
+      float detailWave = sin(pos.x * 10.0 - uTime * 1.0) * (uScroll * 0.1);
       
       pos.y += distortion + detailWave;
 
@@ -92,8 +92,8 @@ export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps
       // Sharper fresnel for edges
       float fresnel = pow(1.0 - max(dot(normal, viewDir), 0.0), 1.5);
       
-      // Glowing edge highlight (using fresnel + pulse)
-      float pulse = sin(vUv.x * 50.0 - uTime * 5.0) * 0.5 + 0.5;
+      // Glowing edge highlight (using fresnel + pulse, slowed down)
+      float pulse = sin(vUv.x * 50.0 - uTime * 1.5) * 0.5 + 0.5;
       vec3 edgeGlow = cyan * fresnel * (0.5 + pulse * 1.5);
       
       // Combine colors
@@ -124,14 +124,14 @@ export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps
       const idleY = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
       
       // Scale up massively as we scroll down to cover the screen
-      // Linear huge growth ensures it completely fills the viewport
-      const scale = 1.0 + smoothScroll * 50.0;
+      // Linear huge growth ensures it completely fills the viewport (reduced rate)
+      const scale = 1.0 + smoothScroll * 30.0;
       meshRef.current.scale.set(scale, scale, scale);
       
       // Move towards the camera to engulf the view
-      // Camera ends up at z=8. Ribbon center at z=4. 
-      // With scale 50, ribbon z goes from -100 to 100. So camera is well inside it.
-      meshRef.current.position.z = smoothScroll * 4.0;
+      // Camera ends up at z=8. Ribbon center at z=5. 
+      // With scale 30, ribbon z goes from -60 to 60. So camera is well inside it.
+      meshRef.current.position.z = smoothScroll * 5.0;
       meshRef.current.position.y = idleY;
       
       // Add a slight rotation to make the engulfing feel like a wave crashing
