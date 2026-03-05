@@ -49,9 +49,9 @@ export default function HeroSection() {
         {/* Center Content */}
         <div className="absolute top-[65%] left-1/2 -translate-x-1/2 flex flex-col items-center justify-center text-center pointer-events-auto">
           <div ref={textRef}>
-            <button className="px-8 py-4 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-300 font-medium tracking-wide backdrop-blur-sm">
+            {/*<button className="px-8 py-4 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-300 font-medium tracking-wide backdrop-blur-sm">
               Start a Project
-            </button>
+            </button>*/}
           </div>
         </div>
 
