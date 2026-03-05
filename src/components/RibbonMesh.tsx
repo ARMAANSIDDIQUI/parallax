@@ -53,10 +53,6 @@ export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps
       // Subtle animated distortion along the surface
       float distortion = sin(pos.x * 2.0 + uTime * 2.0) * 0.2 + cos(pos.z * 2.0 + uTime) * 0.1;
       pos.y += distortion;
-      
-      // Scroll-based movement (moves up and forward)
-      pos.y += uScroll * 12.0;
-      pos.z += uScroll * 4.0;
 
       vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
       vViewPosition = -mvPosition.xyz;
@@ -102,6 +98,7 @@ export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps
   `;
 
   useFrame((state) => {
+    let smoothScroll = scrollProgress.current;
     if (materialRef.current) {
       materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
       // Smoothly interpolate scroll uniform
@@ -110,11 +107,25 @@ export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps
         scrollProgress.current,
         0.1
       );
+      smoothScroll = materialRef.current.uniforms.uScroll.value;
     }
 
     if (meshRef.current) {
-      // Only idle floating, NO mouse rotation
-      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
+      // Idle floating
+      const idleY = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
+      
+      // Scale up massively as we scroll down to cover the screen
+      // Math.pow(smoothScroll, 3) makes the growth exponential towards the end
+      const scale = 1.0 + Math.pow(smoothScroll, 3) * 45.0;
+      meshRef.current.scale.set(scale, scale, scale);
+      
+      // Move towards the camera to engulf the view
+      meshRef.current.position.z = smoothScroll * 8.5;
+      meshRef.current.position.y = idleY + smoothScroll * 1.5;
+      
+      // Add a slight rotation to make the engulfing feel like a wave crashing
+      meshRef.current.rotation.z = smoothScroll * Math.PI * 0.2;
+      meshRef.current.rotation.x = smoothScroll * Math.PI * 0.1;
     }
   });
 
