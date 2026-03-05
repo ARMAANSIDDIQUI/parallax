@@ -66,6 +66,7 @@ export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps
     varying vec3 vViewPosition;
 
     uniform float uTime;
+    uniform float uScroll;
 
     void main() {
       // Color palette: Deep Blue to Bright Cyan
@@ -90,8 +91,8 @@ export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps
       // Combine colors
       vec3 finalColor = baseColor + edgeGlow;
       
-      // Transparency logic
-      float alpha = 0.85 + fresnel * 0.15;
+      // Transparency logic - becomes fully opaque as it engulfs the screen
+      float alpha = mix(0.85 + fresnel * 0.15, 1.0, uScroll);
       
       gl_FragColor = vec4(finalColor, alpha);
     }
@@ -115,16 +116,18 @@ export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps
       const idleY = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
       
       // Scale up massively as we scroll down to cover the screen
-      // Math.pow(smoothScroll, 3) makes the growth exponential towards the end
-      const scale = 1.0 + Math.pow(smoothScroll, 3) * 45.0;
+      // Linear huge growth ensures it completely fills the viewport
+      const scale = 1.0 + smoothScroll * 50.0;
       meshRef.current.scale.set(scale, scale, scale);
       
       // Move towards the camera to engulf the view
-      meshRef.current.position.z = smoothScroll * 8.5;
-      meshRef.current.position.y = idleY + smoothScroll * 1.5;
+      // Camera ends up at z=8. Ribbon center at z=4. 
+      // With scale 50, ribbon z goes from -100 to 100. So camera is well inside it.
+      meshRef.current.position.z = smoothScroll * 4.0;
+      meshRef.current.position.y = idleY;
       
       // Add a slight rotation to make the engulfing feel like a wave crashing
-      meshRef.current.rotation.z = smoothScroll * Math.PI * 0.2;
+      meshRef.current.rotation.z = smoothScroll * Math.PI * 0.1;
       meshRef.current.rotation.x = smoothScroll * Math.PI * 0.1;
     }
   });
