@@ -134,9 +134,9 @@ export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps
       meshRef.current.position.z = smoothScroll * 5.0;
       meshRef.current.position.y = idleY;
       
-      // Add a slight rotation to make the engulfing feel like a wave crashing
-      meshRef.current.rotation.z = smoothScroll * Math.PI * 0.1;
-      meshRef.current.rotation.x = smoothScroll * Math.PI * 0.1;
+      // Rotate exactly 180 degrees (Math.PI) by the end of the scroll
+      meshRef.current.rotation.z = smoothScroll * Math.PI;
+      meshRef.current.rotation.x = smoothScroll * Math.PI * 0.1; // Keep slight X tilt for depth
     }
   });
 
