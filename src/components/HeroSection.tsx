@@ -9,7 +9,7 @@ export default function HeroSection() {
   const textRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const ribbonContainerRef = useRef<HTMLDivElement>(null);
-  
+
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -22,9 +22,12 @@ export default function HeroSection() {
   return (
     <section ref={heroRef} className="relative w-full h-screen overflow-hidden bg-[#020617] text-white">
       {/* Background Layer */}
-      <div 
-        ref={bgRef} 
+      <div
+        ref={bgRef}
         className="absolute -inset-[20%] z-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#0f172a] via-[#020617] to-[#020617] opacity-80"
+        style={{
+          background: 'radial-gradient(circle at center, #0f172a 0%, #020617 70%)'
+        }}
       />
 
       {/* 3D Ribbon Layer */}
@@ -34,12 +37,11 @@ export default function HeroSection() {
 
       {/* UI Overlay Layer */}
       <div className="absolute inset-0 z-20 flex flex-col justify-between p-6 md:p-12 pointer-events-none">
-        
-        {/* Header */}
+
         <header className="flex justify-between items-center pointer-events-auto">
-          <div className="text-xl font-bold tracking-tighter flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-600" />
-            <span>NEXUS</span>
+          <div className="flex items-center gap-3">
+            <img src="/logo.webp" alt="GoZoom Logo" className="h-8 md:h-10 w-auto object-contain" />
+            {/* <span className="text-xl md:text-2xl font-bold tracking-tighter text-white">GOZOOM</span> */}
           </div>
           <button className="p-2 rounded-full hover:bg-white/10 transition-colors">
             <Menu className="w-6 h-6" />
@@ -58,7 +60,7 @@ export default function HeroSection() {
         {/* Footer */}
         <footer className="flex justify-between items-end pointer-events-auto">
           <div className="text-sm text-gray-400 font-mono tracking-widest uppercase">
-            Since 2010
+            Since 2022
           </div>
           <div className="flex flex-col items-center gap-2 text-gray-400 animate-bounce">
             <span className="text-xs font-mono uppercase tracking-widest">Scroll Down</span>
@@ -67,7 +69,7 @@ export default function HeroSection() {
         </footer>
       </div>
 
-      <ScrollController 
+      <ScrollController
         scrollProgress={scrollProgress}
         heroRef={heroRef}
         textRef={textRef}

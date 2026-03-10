@@ -18,7 +18,7 @@ export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps
     for (let i = 0; i <= segments; i++) {
       const t = i / segments;
       // Long sweeping curve spanning across the screen
-      const x = (t - 0.5) * 35; 
+      const x = (t - 0.5) * 35;
       const y = Math.sin(t * Math.PI * 3) * 2.5;
       const z = Math.cos(t * Math.PI * 2) * 2.0;
       points.push(new THREE.Vector3(x, y, z));
@@ -77,14 +77,14 @@ export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps
     uniform float uScroll;
 
     void main() {
-      // Color palette: Deep Blue to Bright Cyan
-      vec3 darkBlue = vec3(0.02, 0.08, 0.25);
-      vec3 midBlue = vec3(0.0, 0.3, 0.8);
-      vec3 cyan = vec3(0.0, 0.8, 1.0);
+      // Color palette: Deep Blue to Vibrant Green (GoZoom Palette)
+      vec3 darkBlue = vec3(0.01, 0.04, 0.15); // Deeper navy
+      vec3 electricBlue = vec3(0.0, 0.64, 1.0); // #00A3FF
+      vec3 vibrantGreen = vec3(0.18, 1.0, 0.48); // #2DFF7A
       
       // Base gradient moving along the ribbon
       float gradient = sin(vUv.x * 10.0 - uTime * 0.5) * 0.5 + 0.5;
-      vec3 baseColor = mix(darkBlue, midBlue, gradient);
+      vec3 baseColor = mix(electricBlue, vibrantGreen, gradient);
       
       // Fresnel effect for 3D volume and edge highlighting
       vec3 normal = normalize(vNormal);
@@ -94,10 +94,10 @@ export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps
       
       // Glowing edge highlight (using fresnel + pulse, slowed down)
       float pulse = sin(vUv.x * 50.0 - uTime * 1.5) * 0.5 + 0.5;
-      vec3 edgeGlow = cyan * fresnel * (0.5 + pulse * 1.5);
+      vec3 edgeGlow = vibrantGreen * fresnel * (0.5 + pulse * 1.5);
       
       // Combine colors
-      vec3 finalColor = baseColor + edgeGlow;
+      vec3 finalColor = mix(darkBlue, baseColor, 0.7) + edgeGlow;
       
       // Transparency logic - becomes fully opaque as it engulfs the screen
       float alpha = mix(0.85 + fresnel * 0.15, 1.0, uScroll);
@@ -122,18 +122,18 @@ export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps
     if (meshRef.current) {
       // Idle floating
       const idleY = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
-      
+
       // Scale up massively as we scroll down to cover the screen
       // Linear huge growth ensures it completely fills the viewport (reduced rate)
       const scale = 1.0 + smoothScroll * 30.0;
       meshRef.current.scale.set(scale, scale, scale);
-      
+
       // Move towards the camera to engulf the view
       // Camera ends up at z=8. Ribbon center at z=5. 
       // With scale 30, ribbon z goes from -60 to 60. So camera is well inside it.
       meshRef.current.position.z = smoothScroll * 5.0;
       meshRef.current.position.y = idleY;
-      
+
       // Rotate exactly 180 degrees (Math.PI) by the end of the scroll
       meshRef.current.rotation.z = smoothScroll * Math.PI;
       meshRef.current.rotation.x = smoothScroll * Math.PI * 0.1; // Keep slight X tilt for depth

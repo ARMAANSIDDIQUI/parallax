@@ -32,20 +32,20 @@ export default function SectionHeader({ label, title, description }: SectionHead
       }
     });
 
-    tl.fromTo(labelEl, 
+    tl.fromTo(labelEl,
       { y: 20, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }
     )
-    .fromTo(titleEl,
-      { y: 40, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
-      '-=0.4'
-    )
-    .fromTo(descEl,
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' },
-      '-=0.6'
-    );
+      .fromTo(titleEl,
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
+        '-=0.4'
+      )
+      .fromTo(descEl,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' },
+        '-=0.6'
+      );
 
     return () => {
       tl.kill();
@@ -54,19 +54,19 @@ export default function SectionHeader({ label, title, description }: SectionHead
 
   return (
     <div ref={headerRef} className="flex flex-col items-center text-center max-w-3xl mx-auto">
-      <p 
+      <p
         ref={labelRef}
-        className="text-xs font-mono tracking-[0.2em] text-cyan-400 mb-6 uppercase"
+        className="text-xs font-mono tracking-[0.2em] text-emerald-400 mb-6 uppercase"
       >
         {label}
       </p>
-      <h2 
+      <h2
         ref={titleRef}
         className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-white mb-8 leading-tight"
       >
         {title}
       </h2>
-      <p 
+      <p
         ref={descRef}
         className="text-lg md:text-xl text-slate-400 leading-relaxed max-w-2xl"
       >
