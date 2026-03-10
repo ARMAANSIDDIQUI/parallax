@@ -2,14 +2,11 @@ import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-interface RibbonMeshProps {
-  scrollProgress: React.MutableRefObject<number>;
-  isMobile: boolean;
-}
 
-export default function RibbonMesh({ scrollProgress, isMobile }: RibbonMeshProps) {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
+
+export default function RibbonMesh({ scrollProgress, isMobile }) {
+  const meshRef = useRef(null);
+  const materialRef = useRef(null);
 
   // Procedural curved geometry
   const curve = useMemo(() => {

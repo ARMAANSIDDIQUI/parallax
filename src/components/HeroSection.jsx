@@ -5,10 +5,10 @@ import { Menu, ArrowDown } from 'lucide-react';
 
 export default function HeroSection() {
   const scrollProgress = useRef(0);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
-  const ribbonContainerRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef(null);
+  const textRef = useRef(null);
+  const bgRef = useRef(null);
+  const ribbonContainerRef = useRef(null);
 
   const [isMobile, setIsMobile] = useState(false);
 

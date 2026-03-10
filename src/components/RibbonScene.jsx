@@ -4,13 +4,10 @@ import { Environment, Float, PerspectiveCamera, Text } from '@react-three/drei';
 import RibbonMesh from './RibbonMesh';
 import * as THREE from 'three';
 
-interface RibbonSceneProps {
-  scrollProgress: React.MutableRefObject<number>;
-  isMobile: boolean;
-}
 
-function AnimatedText({ scrollProgress, isMobile }: { scrollProgress: React.MutableRefObject<number>, isMobile: boolean }) {
-  const textRef = useRef<any>(null);
+
+function AnimatedText({ scrollProgress, isMobile }) {
+  const textRef = useRef(null);
 
   useFrame(() => {
     if (textRef.current) {
@@ -40,7 +37,7 @@ function AnimatedText({ scrollProgress, isMobile }: { scrollProgress: React.Muta
   );
 }
 
-function AnimatedCamera({ scrollProgress, isMobile }: { scrollProgress: React.MutableRefObject<number>, isMobile: boolean }) {
+function AnimatedCamera({ scrollProgress, isMobile }) {
   useFrame((state) => {
     // Move camera slightly forward and up during scroll
     const targetZ = 10 - scrollProgress.current * 2;
@@ -52,19 +49,19 @@ function AnimatedCamera({ scrollProgress, isMobile }: { scrollProgress: React.Mu
   return <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={isMobile ? 60 : 45} />;
 }
 
-export default function RibbonScene({ scrollProgress, isMobile }: RibbonSceneProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+export default function RibbonScene({ scrollProgress, isMobile }) {
+  const containerRef = useRef(null);
 
   return (
     <div ref={containerRef} className="absolute inset-0 w-full h-full pointer-events-none z-10">
       <Canvas dpr={[1, 2]} gl={{ antialias: true, alpha: true }}>
         <Suspense fallback={null}>
           <AnimatedCamera scrollProgress={scrollProgress} isMobile={isMobile} />
-          
+
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 10]} intensity={1} />
           <pointLight position={[-10, -10, -10]} intensity={0.5} color="#00ffff" />
-          
+
           {/* 3D Text that intersects with the ribbon */}
           <AnimatedText scrollProgress={scrollProgress} isMobile={isMobile} />
 

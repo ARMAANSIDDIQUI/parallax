@@ -48,9 +48,9 @@ const services = [
 ];
 
 export default function ServicesSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionRef = useRef(null);
+  const bgRef = useRef(null);
+  const cardsRef = useRef([]);
 
   useEffect(() => {
     const section = sectionRef.current;

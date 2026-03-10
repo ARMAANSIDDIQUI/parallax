@@ -4,17 +4,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface SectionHeaderProps {
-  label: string;
-  title: string;
-  description: string;
-}
-
-export default function SectionHeader({ label, title, description }: SectionHeaderProps) {
-  const headerRef = useRef<HTMLDivElement>(null);
-  const labelRef = useRef<HTMLParagraphElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const descRef = useRef<HTMLParagraphElement>(null);
+export default function SectionHeader({ label, title, description }) {
+  const headerRef = useRef(null);
+  const labelRef = useRef(null);
+  const titleRef = useRef(null);
+  const descRef = useRef(null);
 
   useEffect(() => {
     const header = headerRef.current;
